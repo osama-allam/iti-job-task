@@ -5,10 +5,14 @@ import Edit from './containers/edit';
 import ProductListing from './containers/productListing';
 import Home from './components/home';
 import NotFound from './components/notFound';
+import 'element-theme-default';
+import NavBar from './components/navbar';
 
 function App() {
   return (
+    <>
     <BrowserRouter>
+      <NavBar/>
       <Switch>
             <Route path="/products/edit/:id" component={Edit}/>
             <Route path="/products" exact component={ProductListing}/>
@@ -17,6 +21,7 @@ function App() {
             <Route component={NotFound}/>
       </Switch>
     </BrowserRouter>
+    </>
   );
 }
 

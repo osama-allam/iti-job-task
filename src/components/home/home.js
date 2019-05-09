@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import cssClasses from './home.module.css';
+import logo from '../../logo.svg';
 
-class Home extends Component {
-  render() {
-    return <div>Home</div>;
-  }
+const Home = (props) => {
+  return (
+    <div className={cssClasses.welcome}>
+      <h2>Welcome To our Website</h2>
+      <img  src={logo} alt="Website Logo"/>
+    </div>
+  );
 }
 
 export default Home;

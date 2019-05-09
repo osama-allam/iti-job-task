@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
 using ProductAPICore.Model.Core.Domains;
@@ -33,6 +36,13 @@ namespace ProductAPICore.API
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //below code is to configure the content negotiation weather JSON or XML 
+            services.AddMvc(setupAction =>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+            });
             // add MigrationsAssembly("ProductAPICore.API") to specify where the migration folder will be created
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -54,7 +64,8 @@ namespace ProductAPICore.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IUnitOfWork unitOfWork)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+            IUnitOfWork unitOfWork, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -66,7 +77,24 @@ namespace ProductAPICore.API
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                        if (exceptionHandlerFeature != null)
+                        {
+                            var logger = loggerFactory.CreateLogger("Global exception logger");
+                            logger.LogError(500,
+                                exceptionHandlerFeature.Error,
+                                exceptionHandlerFeature.Error.Message);
+                        }
+
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("An unexpected fault happened. Try again later.");
+
+                    });
+                });
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -79,9 +107,17 @@ namespace ProductAPICore.API
 
             AutoMapper.Mapper.Initialize(config =>
             {
-                config.CreateMap<Product, ProductViewModel>()
+                config.CreateMap<Product, GetProductViewModel>()
                     .ForMember(dest => dest.CompanyName,
-                        opt => opt.MapFrom(src => src.Company.Name));
+                        opt => opt.MapFrom(src => src.Company.Name))
+                    .ForMember(dest => dest.CompanyId,
+                        opt => opt.MapFrom(src => src.Company.Id));
+
+
+                config.CreateMap<Product, UpdateProductViewModel>();
+
+
+                config.CreateMap<UpdateProductViewModel, Product>();
             });
 
 

@@ -1,1 +1,1 @@
-# iti-job-task
+# Front End Layout for displaying products and editing them using React js

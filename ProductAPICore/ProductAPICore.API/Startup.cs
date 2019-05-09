@@ -38,12 +38,12 @@ namespace ProductAPICore.API
                     Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("ProductAPICore.API")));
 
-
             //Change from IdentityUser to ApplicationUser to make login and register work
             //also in _LoginPartial.cshtml check comment for corresponding changes
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             //Add this line to register UnitOfWork in order to make use of DI 
             //where it will pass an object of type IUnitOfWork for each controller
             services.AddScoped<IUnitOfWork, UnitOfWork>();

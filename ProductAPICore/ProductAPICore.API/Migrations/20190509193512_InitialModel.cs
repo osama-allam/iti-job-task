@@ -53,7 +53,7 @@ namespace ProductAPICore.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,7 +172,8 @@ namespace ProductAPICore.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "nvarchar", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    ImageUrl = table.Column<string>(maxLength: 1000, nullable: false),
                     Price = table.Column<double>(nullable: false),
                     FK_CompanyId = table.Column<int>(nullable: false)
                 },

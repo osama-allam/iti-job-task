@@ -192,8 +192,7 @@ namespace ProductAPICore.API.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar")
-                        .HasMaxLength(50);
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -209,9 +208,12 @@ namespace ProductAPICore.API.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnName("FK_CompanyId");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(1000);
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar")
                         .HasMaxLength(100);
 
                     b.Property<double>("Price");

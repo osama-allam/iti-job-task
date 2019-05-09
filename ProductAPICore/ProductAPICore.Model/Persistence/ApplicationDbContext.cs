@@ -19,9 +19,9 @@ namespace ProductAPICore.Model.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new CompanyConfiguration());
-            builder.ApplyConfiguration(new ApplicationUserConfiguration());
         }
 
     }

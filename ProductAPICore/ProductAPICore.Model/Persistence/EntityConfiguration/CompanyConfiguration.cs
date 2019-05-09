@@ -6,8 +6,6 @@ namespace ProductAPICore.Model.Persistence.EntityConfiguration
 {
     public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
-
-
         public void Configure(EntityTypeBuilder<Company> builder)
         {
             builder.ToTable("Company");
@@ -15,8 +13,7 @@ namespace ProductAPICore.Model.Persistence.EntityConfiguration
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Name)
-                .HasColumnType("nvarchar")
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsRequired();
         }
     }

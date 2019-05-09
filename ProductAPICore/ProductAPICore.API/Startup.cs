@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
 using ProductAPICore.Model.Core.Domains;
 using ProductAPICore.Model.Persistence;
@@ -59,6 +60,8 @@ namespace ProductAPICore.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                //EnsureSeedDataForContext() is used to seed database and added in case of development only to avoid 
+                //problems in production and not to mess with data
                 unitOfWork.EnsureSeedDataForContext();
             }
             else
@@ -73,6 +76,11 @@ namespace ProductAPICore.API
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            AutoMapper.Mapper.Initialize(config =>
+            {
+                config.CreateMap<Product, ProductViewModel>();
+            });
 
 
             app.UseMvc();

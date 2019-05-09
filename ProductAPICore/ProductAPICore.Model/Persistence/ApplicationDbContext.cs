@@ -12,7 +12,7 @@ namespace ProductAPICore.Model.Persistence
         {
 
         }
-        public virtual DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
 

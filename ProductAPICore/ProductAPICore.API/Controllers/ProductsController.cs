@@ -17,7 +17,7 @@ namespace ProductAPICore.API.Controllers
         }
 
 
-        //api/products
+        //GET:api/products
         [HttpGet()]
         public IActionResult GetProducts()
         {
@@ -27,7 +27,7 @@ namespace ProductAPICore.API.Controllers
 
         }
 
-        //api/products/5
+        //GET:api/products/5
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id)
         {
@@ -41,6 +41,7 @@ namespace ProductAPICore.API.Controllers
 
         }
 
+        //PUT:api/products/5
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] UpdateProductViewModel product)
         {

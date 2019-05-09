@@ -116,8 +116,10 @@ namespace ProductAPICore.API
 
                 config.CreateMap<Product, UpdateProductViewModel>();
 
-
                 config.CreateMap<UpdateProductViewModel, Product>();
+
+
+                config.CreateMap<Company, GetCompanyViewModel>();
             });
 
 

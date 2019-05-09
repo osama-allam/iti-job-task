@@ -4,4 +4,11 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Domains\" />
+    <Folder Include="Core\Repository\" />
+    <Folder Include="Persistence\EntityConfiguration\" />
+    <Folder Include="Persistence\Repository\" />
+  </ItemGroup>
+
 </Project>

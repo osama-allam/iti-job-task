@@ -17,9 +17,21 @@ namespace ProductAPICore.API.Controllers
         [HttpGet()]
         public IActionResult GetProducts()
         {
-            var productsFromRepo = _unitOfWork.Products.GetAll();
+            var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany();
             var products = Mapper.Map<IEnumerable<ProductViewModel>>(productsFromRepo);
             return Ok(products);
+
+        }
+        [HttpGet("{id}", Name = "GetProductById")]
+        public IActionResult GetProduct(int id)
+        {
+            var productFromRepo = _unitOfWork.Products.GetProductWithCompany(id);
+            if (productFromRepo == null)
+            {
+                return NotFound();
+            }
+            var product = Mapper.Map<ProductViewModel>(productFromRepo);
+            return Ok(product);
 
         }
     }

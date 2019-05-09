@@ -79,7 +79,9 @@ namespace ProductAPICore.API
 
             AutoMapper.Mapper.Initialize(config =>
             {
-                config.CreateMap<Product, ProductViewModel>();
+                config.CreateMap<Product, ProductViewModel>()
+                    .ForMember(dest => dest.CompanyName,
+                        opt => opt.MapFrom(src => src.Company.Name));
             });
 
 

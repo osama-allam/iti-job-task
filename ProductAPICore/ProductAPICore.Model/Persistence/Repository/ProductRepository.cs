@@ -1,4 +1,7 @@
-﻿namespace ProductAPICore.Model.Persistence.Repository
+﻿using ProductAPICore.Model.Core.Domains;
+using ProductAPICore.Model.Core.Repository;
+
+namespace ProductAPICore.Model.Persistence.Repository
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {

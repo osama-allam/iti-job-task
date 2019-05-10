@@ -17,6 +17,10 @@ namespace ProductAPICore.API.Controllers
         }
 
         //GET:api/products
+        /// <summary>
+        /// Get all Companies 
+        /// </summary>
+        /// <returns>Returns a list of companies</returns>
         [HttpGet()]
         public IActionResult GetCompanies()
         {
@@ -27,6 +31,11 @@ namespace ProductAPICore.API.Controllers
         }
 
         //GET:api/products/5
+        /// <summary>
+        /// Get company by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A Company with id and name fields</returns>
         [HttpGet("{id}")]
         public IActionResult GetCompany(int id)
         {

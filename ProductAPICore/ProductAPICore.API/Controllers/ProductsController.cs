@@ -16,7 +16,10 @@ namespace ProductAPICore.API.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
+        /// <summary>
+        /// Get all Products 
+        /// </summary>
+        /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
         //GET:api/products
         [HttpGet()]
         public IActionResult GetProducts()
@@ -28,6 +31,11 @@ namespace ProductAPICore.API.Controllers
         }
 
         //GET:api/products/5
+        /// <summary>
+        /// Get Product by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A Product with id, name, price, imageUrl and companyId fields</returns>
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id)
         {
@@ -42,6 +50,12 @@ namespace ProductAPICore.API.Controllers
         }
 
         //PUT:api/products/5
+        /// <summary>
+        /// Updates a Product by id and providing modified Product as an object 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="product"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] UpdateProductViewModel product)
         {

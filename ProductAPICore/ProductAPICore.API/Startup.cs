@@ -10,10 +10,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
 using ProductAPICore.Model.Core.Domains;
 using ProductAPICore.Model.Persistence;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace ProductAPICore.API
 {
@@ -42,6 +47,9 @@ namespace ProductAPICore.API
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
                 setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
             // add MigrationsAssembly("ProductAPICore.API") to specify where the migration folder will be created
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -61,6 +69,22 @@ namespace ProductAPICore.API
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //registering Swagger for documentation
+            services.AddSwaggerGen(setupAction =>
+            {
+                // use: https://localhost:<port number>/swagger/ProductOpenAPISpecification/swagger.json
+                setupAction.SwaggerDoc("ProductOpenAPISpecification", new Info()
+                {
+                    Title = "Product API",
+                    Version = "1",
+                    Description = "By using this API you can list and edit products"
+                });
+
+                //to read comments and action summary
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+                setupAction.IncludeXmlComments(xmlCommentsFullPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,9 +95,6 @@ namespace ProductAPICore.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                //EnsureSeedDataForContext() is used to seed database and added in case of development only to avoid 
-                //problems in production and not to mess with data
-                unitOfWork.EnsureSeedDataForContext();
             }
             else
             {
@@ -122,7 +143,18 @@ namespace ProductAPICore.API
                 config.CreateMap<Company, GetCompanyViewModel>();
             });
 
-
+            //EnsureSeedDataForContext() is used to seed database and added in case of development only to avoid 
+            //problems in production and not to mess with data
+            unitOfWork.EnsureSeedDataForContext();
+            app.UseSwagger();
+            app.UseSwaggerUI(setupAction =>
+            {
+                //swagger/index.html
+                setupAction.SwaggerEndpoint("/swagger/ProductOpenAPISpecification/swagger.json",
+                    "Product API");
+                //make default route open swagger documentation by default
+                setupAction.RoutePrefix = "";
+            });
             app.UseMvc();
 
 

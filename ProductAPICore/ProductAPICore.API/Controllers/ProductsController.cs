@@ -22,30 +22,17 @@ namespace ProductAPICore.API.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        /// <summary>
-        /// Get all Products 
-        /// </summary>
-        /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
-        /// <response code="200">(Success) Returns a list of Products</response>
-        //GET:api/products
-
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
-        //[HttpGet()]
-        //public IActionResult GetProducts()
-        //{
-        //    var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany();
-        //    var products = Mapper.Map<IEnumerable<GetProductViewModel>>(productsFromRepo);
-        //    return Ok(products);
-
-        //}
 
         /// <summary>
         /// Get all Products with pagination
         /// </summary>
+        /// <param name="productsResourceParameters">ProductsResourceParameters this object has two members PageNumber and PageSize</param>
         /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
         /// <response code="200">(Success) Returns a list of Products</response>
+        /// <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
         //GET:api/products
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [HttpGet(Name = "GetProducts")]
         public IActionResult GetProducts(ProductsResourceParameters productsResourceParameters)
         {
@@ -78,7 +65,9 @@ namespace ProductAPICore.API.Controllers
         /// <param name="id"></param>
         /// <returns>A Product with id, name, price, imageUrl and companyId fields</returns>
         /// <response code="200">(Success) Returns a single Product</response>
+        /// <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
         [HttpGet("{id}", Name = "GetProduct")]
         public IActionResult GetProduct(int id)
@@ -101,11 +90,12 @@ namespace ProductAPICore.API.Controllers
         /// <param name="product"></param>
         /// <returns></returns>
         /// <response code="204">(Success) Product updated successfully</response>
+        /// <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         //uncomment below line if you want to accept only JSON objects
         //[Consumes("application/json")]
         [HttpPut("{id}")]

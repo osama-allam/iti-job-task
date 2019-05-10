@@ -1,11 +1,21 @@
-﻿namespace ProductAPICore.Model.Helpers
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProductAPICore.Model.Helpers
 {
     public class ProductsResourceParameters
     {
+
         private const int MaxPageSize = 20;
+        /// <summary>
+        /// The current page number
+        /// </summary>
+        [Required]
         public int PageNumber { get; set; } = 1;
         private int _pageSize = 10;
-
+        /// <summary>
+        /// Number of products per page
+        /// </summary>
+        [Required]
         public int PageSize
         {
             get { return _pageSize; }

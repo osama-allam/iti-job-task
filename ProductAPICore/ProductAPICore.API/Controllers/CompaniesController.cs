@@ -23,7 +23,9 @@ namespace ProductAPICore.API.Controllers
         /// </summary>
         /// <returns>Returns a list of companies</returns>
         /// <response code="200">(Success) Returns a list of Companies</response>
+        /// <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCompanyViewModel))]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [HttpGet()]
         public IActionResult GetCompanies()
         {
@@ -40,6 +42,7 @@ namespace ProductAPICore.API.Controllers
         /// <param name="id"></param>
         /// <returns>A Company with id and name fields</returns>
         /// <response code="200">(Success) Returns a single Company</response>
+        /// <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCompanyViewModel))]

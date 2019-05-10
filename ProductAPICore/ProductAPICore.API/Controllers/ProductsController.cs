@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
@@ -20,7 +21,9 @@ namespace ProductAPICore.API.Controllers
         /// Get all Products 
         /// </summary>
         /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
+        /// <response code="200">(Success) Returns a list of Products</response>
         //GET:api/products
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
         [HttpGet()]
         public IActionResult GetProducts()
         {
@@ -36,6 +39,9 @@ namespace ProductAPICore.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Product with id, name, price, imageUrl and companyId fields</returns>
+        /// <response code="200">(Success) Returns a single Product</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
         [HttpGet("{id}")]
         public IActionResult GetProduct(int id)
         {
@@ -56,6 +62,9 @@ namespace ProductAPICore.API.Controllers
         /// <param name="id"></param>
         /// <param name="product"></param>
         /// <returns></returns>
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] UpdateProductViewModel product)
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
@@ -21,6 +22,8 @@ namespace ProductAPICore.API.Controllers
         /// Get all Companies 
         /// </summary>
         /// <returns>Returns a list of companies</returns>
+        /// <response code="200">(Success) Returns a list of Companies</response>
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCompanyViewModel))]
         [HttpGet()]
         public IActionResult GetCompanies()
         {
@@ -36,6 +39,9 @@ namespace ProductAPICore.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A Company with id and name fields</returns>
+        /// <response code="200">(Success) Returns a single Company</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCompanyViewModel))]
         [HttpGet("{id}")]
         public IActionResult GetCompany(int id)
         {

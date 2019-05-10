@@ -125,7 +125,7 @@ namespace ProductAPICore.API
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
+            app.UseCors(options => options.AllowAnyOrigin());
             AutoMapper.Mapper.Initialize(config =>
             {
                 config.CreateMap<Product, GetProductViewModel>()
@@ -155,6 +155,7 @@ namespace ProductAPICore.API
                 //make default route open swagger documentation by default
                 setupAction.RoutePrefix = "";
             });
+
             app.UseMvc();
 
 

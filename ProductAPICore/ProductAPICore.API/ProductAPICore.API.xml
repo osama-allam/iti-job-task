@@ -9,6 +9,7 @@
             Get all Companies 
             </summary>
             <returns>Returns a list of companies</returns>
+            <response code="200">(Success) Returns a list of Companies</response>
         </member>
         <member name="M:ProductAPICore.API.Controllers.CompaniesController.GetCompany(System.Int32)">
             <summary>
@@ -16,12 +17,14 @@
             </summary>
             <param name="id"></param>
             <returns>A Company with id and name fields</returns>
+            <response code="200">(Success) Returns a single Company</response>
         </member>
         <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProducts">
             <summary>
             Get all Products 
             </summary>
             <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
+            <response code="200">(Success) Returns a list of Products</response>
         </member>
         <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProduct(System.Int32)">
             <summary>
@@ -29,6 +32,7 @@
             </summary>
             <param name="id"></param>
             <returns>A Product with id, name, price, imageUrl and companyId fields</returns>
+            <response code="200">(Success) Returns a single Product</response>
         </member>
         <member name="M:ProductAPICore.API.Controllers.ProductsController.UpdateProduct(System.Int32,ProductAPICore.API.ViewModels.UpdateProductViewModel)">
             <summary>

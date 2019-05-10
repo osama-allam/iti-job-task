@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ProductAPICore.API</name>
+    </assembly>
+    <members>
+        <member name="M:ProductAPICore.API.Controllers.CompaniesController.GetCompanies">
+            <summary>
+            Get all Companies 
+            </summary>
+            <returns>Returns a list of companies</returns>
+            <response code="200">(Success) Returns a list of Companies</response>
+            <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
+        </member>
+        <member name="M:ProductAPICore.API.Controllers.CompaniesController.GetCompany(System.Int32)">
+            <summary>
+            Get company by id
+            </summary>
+            <param name="id"></param>
+            <returns>A Company with id and name fields</returns>
+            <response code="200">(Success) Returns a single Company</response>
+            <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
+        </member>
+        <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProducts(ProductAPICore.Model.Helpers.ProductsResourceParameters)">
+            <summary>
+            Get all Products with pagination
+            </summary>
+            <param name="productsResourceParameters">ProductsResourceParameters this object has two members PageNumber and PageSize</param>
+            <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
+            <response code="200">(Success) Returns a list of Products</response>
+            <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
+        </member>
+        <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProduct(System.Int32)">
+            <summary>
+            Get Product by id
+            </summary>
+            <param name="id"></param>
+            <returns>A Product with id, name, price, imageUrl and companyId fields</returns>
+            <response code="200">(Success) Returns a single Product</response>
+            <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
+        </member>
+        <member name="M:ProductAPICore.API.Controllers.ProductsController.UpdateProduct(System.Int32,ProductAPICore.API.ViewModels.UpdateProductViewModel)">
+            <summary>
+            Updates a Product by id and providing modified Product as an object 
+            </summary>
+            <param name="id"></param>
+            <param name="product"></param>
+            <returns></returns>
+            <response code="204">(Success) Product updated successfully</response>
+            <response code="406">(Not Acceptable) In case of using setting response other than JSON or XML</response>
+        </member>
+        <member name="T:ProductAPICore.API.ViewModels.UpdateProductViewModel">
+            <summary>
+            A product view-model for update action with Name, ImageUrl, Price and CompanyId 
+            </summary>
+        </member>
+        <member name="P:ProductAPICore.API.ViewModels.UpdateProductViewModel.Name">
+            <summary>
+            Product Name
+            </summary>
+        </member>
+        <member name="P:ProductAPICore.API.ViewModels.UpdateProductViewModel.ImageUrl">
+            <summary>
+            Product ImageUrl
+            </summary>
+        </member>
+        <member name="P:ProductAPICore.API.ViewModels.UpdateProductViewModel.Price">
+            <summary>
+            Product Price
+            </summary>
+        </member>
+        <member name="P:ProductAPICore.API.ViewModels.UpdateProductViewModel.CompanyId">
+            <summary>
+            Product producer Company Id
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -24,7 +24,7 @@ namespace ProductAPICore.API.Controllers
 
 
         /// <summary>
-        /// Get all Products with pagination
+        /// Get all Products with pagination and search using Company Name and/or Product Name
         /// </summary>
         /// <param name="productsResourceParameters">ProductsResourceParameters this object has two members PageNumber and PageSize</param>
         /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
@@ -37,12 +37,14 @@ namespace ProductAPICore.API.Controllers
         public IActionResult GetProducts(ProductsResourceParameters productsResourceParameters)
         {
             var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany(productsResourceParameters);
+            //Generate previous and next links
             var previousPageLink = productsFromRepo.HasPrevious
                 ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.PreviousPage)
                 : null;
             var nextPageLink = productsFromRepo.HasNext
                 ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.NextPage)
                 : null;
+            //Construct meta data
             var paginationMetaData = new
             {
                 totalCount = productsFromRepo.TotalCount,
@@ -52,6 +54,7 @@ namespace ProductAPICore.API.Controllers
                 previousPageLink = previousPageLink,
                 nextPageLink = nextPageLink
             };
+
             Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
 
             var products = Mapper.Map<IEnumerable<GetProductViewModel>>(productsFromRepo);
@@ -151,6 +154,8 @@ namespace ProductAPICore.API.Controllers
                     return _linkGenerator.GetUriByAction(HttpContext, "GetProducts",
                         values: new
                         {
+                            searchQuery = productsResourceParameters.SearchQuery,
+                            companyName = productsResourceParameters.CompanyName,
                             pageNumber = productsResourceParameters.PageNumber - 1,
                             pageSize = productsResourceParameters.PageSize
                         });
@@ -159,22 +164,19 @@ namespace ProductAPICore.API.Controllers
                     return _linkGenerator.GetUriByAction(HttpContext, "GetProducts",
                         values: new
                         {
+                            searchQuery = productsResourceParameters.SearchQuery,
+                            companyName = productsResourceParameters.CompanyName,
                             pageNumber = productsResourceParameters.PageNumber + 1,
                             pageSize = productsResourceParameters.PageSize
                         });
-
-                    //return _urlHelper.Link("GetProducts",
-                    //    new
-                    //    {
-                    //        pageNumber = productsResourceParameters.PageNumber + 1,
-                    //        pageSize = productsResourceParameters.PageSize
-                    //    });
                     break;
                 default:
 
                     return _linkGenerator.GetUriByAction(HttpContext, "GetProducts",
                         values: new
                         {
+                            searchQuery = productsResourceParameters.SearchQuery,
+                            companyName = productsResourceParameters.CompanyName,
                             pageNumber = productsResourceParameters.PageNumber + 1,
                             pageSize = productsResourceParameters.PageSize
                         });

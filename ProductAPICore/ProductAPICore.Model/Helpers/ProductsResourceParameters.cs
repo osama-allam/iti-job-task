@@ -22,6 +22,7 @@ namespace ProductAPICore.Model.Helpers
             set { _pageSize = (value > MaxPageSize) ? MaxPageSize : value; }
         }
 
-
+        public string CompanyName { get; set; }
+        public string SearchQuery { get; set; }
     }
 }

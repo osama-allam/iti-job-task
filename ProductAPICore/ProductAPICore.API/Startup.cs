@@ -125,7 +125,6 @@ namespace ProductAPICore.API
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-            app.UseCors(options => options.AllowAnyOrigin());
             AutoMapper.Mapper.Initialize(config =>
             {
                 config.CreateMap<Product, GetProductViewModel>()
@@ -156,6 +155,7 @@ namespace ProductAPICore.API
                 setupAction.RoutePrefix = "";
             });
 
+            app.UseCors(options => options.AllowAnyOrigin());
             app.UseMvc();
 
 

@@ -31,7 +31,27 @@ namespace ProductAPICore.Model.Persistence.Repository
             var productsBeforePaging = _entities
                 .Include(p => p.Company)
                 .OrderBy(p => p.Id)
-                .ThenBy(p => p.Name);
+                .ThenBy(p => p.Name).AsQueryable();
+
+            if (!string.IsNullOrEmpty(productsParams.CompanyName))
+            {
+                var companyName = productsParams.CompanyName
+                    .Trim()
+                    .ToLowerInvariant();
+                productsBeforePaging = productsBeforePaging
+                    .Where(p => p.Company.Name.ToLowerInvariant() == companyName);
+            }
+
+            if (!string.IsNullOrEmpty(productsParams.SearchQuery))
+            {
+                var searchQuery = productsParams.SearchQuery
+                    .Trim()
+                    .ToLowerInvariant();
+                productsBeforePaging = productsBeforePaging
+                    .Where(p => p.Company.Name.ToLowerInvariant().Contains(searchQuery) ||
+                                p.Name.ToLowerInvariant().Contains(searchQuery));
+
+            }
             return PageList<Product>.Create(productsBeforePaging,
                 productsParams.PageNumber, productsParams.PageSize);
         }

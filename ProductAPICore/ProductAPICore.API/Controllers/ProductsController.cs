@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
+using ProductAPICore.Model.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -12,9 +14,12 @@ namespace ProductAPICore.API.Controllers
     public class ProductsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductsController(IUnitOfWork unitOfWork)
+        private readonly LinkGenerator _linkGenerator;
+
+        public ProductsController(IUnitOfWork unitOfWork, LinkGenerator linkGenerator)
         {
             _unitOfWork = unitOfWork;
+            _linkGenerator = linkGenerator;
         }
 
         /// <summary>
@@ -23,14 +28,47 @@ namespace ProductAPICore.API.Controllers
         /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
         /// <response code="200">(Success) Returns a list of Products</response>
         //GET:api/products
+
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
+        //[HttpGet()]
+        //public IActionResult GetProducts()
+        //{
+        //    var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany();
+        //    var products = Mapper.Map<IEnumerable<GetProductViewModel>>(productsFromRepo);
+        //    return Ok(products);
+
+        //}
+
+        /// <summary>
+        /// Get all Products with pagination
+        /// </summary>
+        /// <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
+        /// <response code="200">(Success) Returns a list of Products</response>
+        //GET:api/products
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
-        [HttpGet()]
-        public IActionResult GetProducts()
+        [HttpGet(Name = "GetProducts")]
+        public IActionResult GetProducts(ProductsResourceParameters productsResourceParameters)
         {
-            var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany();
+            var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany(productsResourceParameters);
+            var previousPageLink = productsFromRepo.HasPrevious
+                ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.PreviousPage)
+                : null;
+            var nextPageLink = productsFromRepo.HasNext
+                ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.NextPage)
+                : null;
+            var paginationMetaData = new
+            {
+                totalCount = productsFromRepo.TotalCount,
+                pageSize = productsFromRepo.PageSize,
+                currentPage = productsFromRepo.CurrentPage,
+                totalPages = productsFromRepo.TotalPages,
+                previousPageLink = previousPageLink,
+                nextPageLink = nextPageLink
+            };
+            Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
+
             var products = Mapper.Map<IEnumerable<GetProductViewModel>>(productsFromRepo);
             return Ok(products);
-
         }
 
         //GET:api/products/5
@@ -42,7 +80,7 @@ namespace ProductAPICore.API.Controllers
         /// <response code="200">(Success) Returns a single Product</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetProductViewModel))]
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetProduct")]
         public IActionResult GetProduct(int id)
         {
             var productFromRepo = _unitOfWork.Products.GetProductWithCompany(id);
@@ -50,9 +88,9 @@ namespace ProductAPICore.API.Controllers
             {
                 return NotFound();
             }
+
             var product = Mapper.Map<GetProductViewModel>(productFromRepo);
             return Ok(product);
-
         }
 
         //PUT:api/products/5
@@ -62,9 +100,14 @@ namespace ProductAPICore.API.Controllers
         /// <param name="id"></param>
         /// <param name="product"></param>
         /// <returns></returns>
+        /// <response code="204">(Success) Product updated successfully</response>
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
+        //uncomment below line if you want to accept only JSON objects
+        //[Consumes("application/json")]
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] UpdateProductViewModel product)
         {
@@ -79,17 +122,20 @@ namespace ProductAPICore.API.Controllers
             {
                 return new UnprocessableEntityObjectResult(ModelState);
             }
+
             //if user tries to update product with company that doesn't exist
             if (_unitOfWork.Companies.Get(product.CompanyId) == null)
             {
                 return NotFound();
             }
+
             //try to get this product with provided id (check on id)
             var productFromRepo = _unitOfWork.Products.Get(id);
             if (productFromRepo == null)
             {
                 return NotFound();
             }
+
             // copy data from provided product into selected product
             Mapper.Map(product, productFromRepo);
             try
@@ -102,6 +148,48 @@ namespace ProductAPICore.API.Controllers
             }
 
             return NoContent();
+        }
+
+        private string CreateProductsPaginationUri(ProductsResourceParameters productsResourceParameters,
+            PageUriType pageUriType)
+        {
+            switch (pageUriType)
+            {
+                case PageUriType.PreviousPage:
+
+
+                    return _linkGenerator.GetUriByAction(HttpContext, "GetProducts",
+                        values: new
+                        {
+                            pageNumber = productsResourceParameters.PageNumber - 1,
+                            pageSize = productsResourceParameters.PageSize
+                        });
+                    break;
+                case PageUriType.NextPage:
+                    return _linkGenerator.GetUriByAction(HttpContext, "GetProducts",
+                        values: new
+                        {
+                            pageNumber = productsResourceParameters.PageNumber + 1,
+                            pageSize = productsResourceParameters.PageSize
+                        });
+
+                    //return _urlHelper.Link("GetProducts",
+                    //    new
+                    //    {
+                    //        pageNumber = productsResourceParameters.PageNumber + 1,
+                    //        pageSize = productsResourceParameters.PageSize
+                    //    });
+                    break;
+                default:
+
+                    return _linkGenerator.GetUriByAction(HttpContext, "GetProducts",
+                        values: new
+                        {
+                            pageNumber = productsResourceParameters.PageNumber + 1,
+                            pageSize = productsResourceParameters.PageSize
+                        });
+                    break;
+            }
         }
     }
 }

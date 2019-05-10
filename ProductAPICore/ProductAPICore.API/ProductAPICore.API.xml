@@ -19,9 +19,9 @@
             <returns>A Company with id and name fields</returns>
             <response code="200">(Success) Returns a single Company</response>
         </member>
-        <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProducts">
+        <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProducts(ProductAPICore.Model.Helpers.ProductsResourceParameters)">
             <summary>
-            Get all Products 
+            Get all Products with pagination
             </summary>
             <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>
             <response code="200">(Success) Returns a list of Products</response>
@@ -41,6 +41,7 @@
             <param name="id"></param>
             <param name="product"></param>
             <returns></returns>
+            <response code="204">(Success) Product updated successfully</response>
         </member>
         <member name="T:ProductAPICore.API.ViewModels.UpdateProductViewModel">
             <summary>

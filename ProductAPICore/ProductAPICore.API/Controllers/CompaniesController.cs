@@ -41,6 +41,7 @@ namespace ProductAPICore.API.Controllers
         /// <returns>A Company with id and name fields</returns>
         /// <response code="200">(Success) Returns a single Company</response>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCompanyViewModel))]
         [HttpGet("{id}")]
         public IActionResult GetCompany(int id)

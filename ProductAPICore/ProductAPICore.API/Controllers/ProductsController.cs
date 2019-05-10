@@ -70,7 +70,11 @@ namespace ProductAPICore.API.Controllers
             {
                 return new UnprocessableEntityObjectResult(ModelState);
             }
-
+            //if user tries to update product with company that doesn't exist
+            if (_unitOfWork.Companies.Get(product.CompanyId) == null)
+            {
+                return NotFound();
+            }
             //try to get this product with provided id (check on id)
             var productFromRepo = _unitOfWork.Products.Get(id);
             if (productFromRepo == null)

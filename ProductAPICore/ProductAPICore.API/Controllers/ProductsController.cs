@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace ProductAPICore.API.Controllers
 {
     [Route("api/products")]
+    [Produces("application/json", "application/xml")]
     public class ProductsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

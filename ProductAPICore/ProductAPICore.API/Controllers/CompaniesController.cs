@@ -9,6 +9,7 @@ namespace ProductAPICore.API.Controllers
 {
 
     [Route("api/companies")]
+    [Produces("application/json", "application/xml")]
     public class CompaniesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

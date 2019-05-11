@@ -100,10 +100,6 @@ A step by step series of examples that tell you how to get a development env run
 > ### @icon-info-circle **End-to-End Testing**
 > To isolate unit testing from **SQL Server** database we used [InMemory Provider](https://docs.microsoft.com/en-us/ef/core/providers/in-memory/) to create database in memory to avoid manipulating the actual database  
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Authors
 
 * **Osama Shawky Allam** - *Initial work* - [Email](osama_allam@ymail.com) - [LinkedIn](https://www.linkedin.com/in/osama-allam/)

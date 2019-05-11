@@ -17,10 +17,6 @@ namespace ProductAPICore.Tests
 {
     public class ProductsControllerTest
     {
-        /*
-            - Kindly test each test at a time because we have only on UnitOfWork Object to avoid failed tests
-        */
-
         #region Variables
         private IUnitOfWork _unitOfWork;
         private ApplicationDbContext _dbContext;
@@ -34,12 +30,14 @@ namespace ProductAPICore.Tests
         /// <summary>
         /// Initial setup for tests
         /// </summary>
-
+        public ProductsControllerTest()
+        {
+            AutoMapperProfile.Configure();
+        }
         [SetUp]
         public void Setup()
         {
 
-            AutoMapperHelper.Configure();
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseSqlServer(connectionString);

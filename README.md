@@ -65,7 +65,7 @@ A step by step series of examples that tell you how to get a development env run
     Tools -> NuGet Package Manager -> Package Manager Console
     ```
 
-3. Then type **`Update-Database`** to create database from migrations
+3. Then type **`Update-Database`** to create database from migrations and make sure to select `ProductAPICore.API` from **Default project** list 
 
 4. Then run the project using :arrow_forward: IIS Express this will seed the database using seeding method in `Startup.cs`
 

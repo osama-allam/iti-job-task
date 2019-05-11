@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 using ProductAPICore.API.Controllers;
+using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core;
+using ProductAPICore.Model.Core.Domains;
 using ProductAPICore.Model.Helpers;
 using ProductAPICore.Model.Persistence;
 
@@ -33,6 +35,23 @@ namespace ProductAPICore.Tests
         [SetUp]
         public void Setup()
         {
+
+            AutoMapper.Mapper.Initialize(config =>
+            {
+                config.CreateMap<Product, GetProductViewModel>()
+                    .ForMember(dest => dest.CompanyName,
+                        opt => opt.MapFrom(src => src.Company.Name))
+                    .ForMember(dest => dest.CompanyId,
+                        opt => opt.MapFrom(src => src.Company.Id));
+
+
+                config.CreateMap<Product, UpdateProductViewModel>();
+
+                config.CreateMap<UpdateProductViewModel, Product>();
+
+
+                config.CreateMap<Company, GetCompanyViewModel>();
+            });
             //var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             //builder.UseInMemoryDatabase(Guid.NewGuid().ToString());
 

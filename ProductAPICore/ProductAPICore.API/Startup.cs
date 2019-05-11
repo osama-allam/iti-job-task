@@ -125,6 +125,7 @@ namespace ProductAPICore.API
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            //Configure automapper
             AutoMapper.Mapper.Initialize(config =>
             {
                 config.CreateMap<Product, GetProductViewModel>()

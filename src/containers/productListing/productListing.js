@@ -55,7 +55,7 @@ class ProductListing extends Component {
           render: (data) => {
             return (
               <span>
-               <Button type="info" size="medium" onClick={()=>{this.props.history.push(`products/edit/${data.id}`)}}>Edit</Button>
+               <Button type="info" size="medium" icon="edit" onClick={()=>{this.props.history.push(`products/edit/${data.id}`)}}> Edit</Button>
               </span>
             )
           }

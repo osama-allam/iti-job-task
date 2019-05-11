@@ -103,5 +103,3 @@ A step by step series of examples that tell you how to get a development env run
 ## Authors
 
 * **Osama Shawky Allam** - *Initial work* - [Email](osama_allam@ymail.com) - [LinkedIn](https://www.linkedin.com/in/osama-allam/)
-
-See also the list of [contributors](https://github.com/osama-allam/iti-job-task/graphs/contributors) who participated in this project.

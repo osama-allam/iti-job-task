@@ -23,7 +23,7 @@
         </member>
         <member name="M:ProductAPICore.API.Controllers.ProductsController.GetProducts(ProductAPICore.Model.Helpers.ProductsResourceParameters)">
             <summary>
-            Get all Products with pagination
+            Get all Products with pagination and search using Company Name and/or Product Name
             </summary>
             <param name="productsResourceParameters">ProductsResourceParameters this object has two members PageNumber and PageSize</param>
             <returns>Products list, each product has id, name, price, imageUrl and companyId fields</returns>

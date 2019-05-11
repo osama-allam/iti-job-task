@@ -155,7 +155,7 @@ namespace ProductAPICore.API
                 setupAction.RoutePrefix = "";
             });
 
-            app.UseCors(options => options.AllowAnyOrigin());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseMvc();
 
 

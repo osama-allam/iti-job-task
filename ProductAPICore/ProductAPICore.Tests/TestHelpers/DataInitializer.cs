@@ -5,7 +5,7 @@ namespace ProductAPICore.Tests.TestHelpers
 {
     public class DataInitializer
     {
-        public static List<GetProductViewModel> GetAllProducts()
+        public static List<GetProductViewModel> GetAllProductsViewModels()
         {
             var products = new List<GetProductViewModel>()
             {

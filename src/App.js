@@ -2,7 +2,7 @@ import React from 'react';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import './App.css';
 import Edit from './containers/edit';
-import ProductListing from './containers/productListing';
+import Products from './containers/products';
 import Home from './components/home';
 import NotFound from './components/notFound';
 import 'element-theme-default';
@@ -15,7 +15,7 @@ function App() {
       <NavBar/>
       <Switch>
             <Route path="/products/edit/:id" component={Edit}/>
-            <Route path="/products" exact component={ProductListing}/>
+            <Route path="/products" exact component={Products}/>
             <Redirect from="/home" to="/"/>
             <Route path="/" exact component={Home}/>
             <Route component={NotFound}/>

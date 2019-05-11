@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using ProductAPICore.API.Controllers;
 using ProductAPICore.Model.Core;
 using ProductAPICore.Model.Helpers;
-using ProductAPICore.Tests.TestHelpers;
+using ProductAPICore.Model.Persistence;
 
 namespace ProductAPICore.Tests
 {
@@ -18,8 +20,11 @@ namespace ProductAPICore.Tests
 
         #region Variables
         private IUnitOfWork _unitOfWork;
+        private ApplicationDbContext _dbContext;
         private ProductsController _productsController;
         private LinkGenerator _linkGenerator;
+
+        public static string connectionString = "Server=.;Database=ProductAPICoreDb;Trusted_Connection=True;MultipleActiveResultSets=true";
         #endregion
 
         /// <summary>
@@ -28,7 +33,18 @@ namespace ProductAPICore.Tests
         [SetUp]
         public void Setup()
         {
-            _unitOfWork = new FakeUnitOfWork();
+            //var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            //builder.UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseSqlServer(connectionString);
+            var options = builder.Options;
+
+            _dbContext = new ApplicationDbContext(options);
+
+            var unitOfWork = new Mock<UnitOfWork>(MockBehavior.Default, _dbContext);
+
+            _unitOfWork = unitOfWork.Object;
             _productsController = new ProductsController(_unitOfWork, _linkGenerator);
         }
         [Test]
@@ -41,8 +57,7 @@ namespace ProductAPICore.Tests
                 CompanyName = "",
                 SearchQuery = ""
             };
-            var productController = new ProductsController(_unitOfWork, _linkGenerator);
-            var okResult = productController.GetProducts(productsResourceParameters);
+            var okResult = _productsController.GetProducts(productsResourceParameters);
             Assert.IsInstanceOf<OkObjectResult>(okResult);
         }
 

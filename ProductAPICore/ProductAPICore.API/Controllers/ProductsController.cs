@@ -37,25 +37,34 @@ namespace ProductAPICore.API.Controllers
         public IActionResult GetProducts(ProductsResourceParameters productsResourceParameters)
         {
             var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany(productsResourceParameters);
-            //Generate previous and next links
-            var previousPageLink = productsFromRepo.HasPrevious
-                ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.PreviousPage)
-                : null;
-            var nextPageLink = productsFromRepo.HasNext
-                ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.NextPage)
-                : null;
-            //Construct meta data
-            var paginationMetaData = new
-            {
-                totalCount = productsFromRepo.TotalCount,
-                pageSize = productsFromRepo.PageSize,
-                currentPage = productsFromRepo.CurrentPage,
-                totalPages = productsFromRepo.TotalPages,
-                previousPageLink = previousPageLink,
-                nextPageLink = nextPageLink
-            };
 
-            Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
+            try
+            {
+                //Generate previous and next links
+                var previousPageLink = productsFromRepo.HasPrevious
+                    ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.PreviousPage)
+                    : null;
+                var nextPageLink = productsFromRepo.HasNext
+                    ? CreateProductsPaginationUri(productsResourceParameters, PageUriType.NextPage)
+                    : null;
+                //Construct meta data
+                var paginationMetaData = new
+                {
+                    totalCount = productsFromRepo.TotalCount,
+                    pageSize = productsFromRepo.PageSize,
+                    currentPage = productsFromRepo.CurrentPage,
+                    totalPages = productsFromRepo.TotalPages,
+                    previousPageLink = previousPageLink,
+                    nextPageLink = nextPageLink
+                };
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
+                Response.Headers.Add("Access-Control-Expose-Headers", "X-Pagination");
+            }
+            catch (Exception e)
+            {
+
+                //throw new Exception("Failed to generate pagination link");
+            }
 
             var products = Mapper.Map<IEnumerable<GetProductViewModel>>(productsFromRepo);
             return Ok(products);

@@ -1,32 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 using ProductAPICore.API.Controllers;
 using ProductAPICore.API.ViewModels;
-using ProductAPICore.Model.Core;
-using ProductAPICore.Model.Persistence;
-using ProductAPICore.Tests.TestHelpers;
 using System.Collections.Generic;
+using TestHelpers;
 
 namespace ProductAPICore.Tests
 {
-    public class CompaniesControllerTest
+    public class CompaniesControllerTest : DatabaseTestBase
     {
 
         #region Variables
-        private IUnitOfWork _unitOfWork;
-        private ApplicationDbContext _dbContext;
         private CompaniesController _companiesController;
-
-        public static string connectionString = "Server=.;Database=ProductAPICoreDb;Trusted_Connection=True;MultipleActiveResultSets=true";
         #endregion
 
-        public CompaniesControllerTest()
-        {
-            AutoMapperProfile.Configure();
-        }
         #region Setup
         /// <summary>
         /// Initial setup for tests
@@ -34,15 +22,6 @@ namespace ProductAPICore.Tests
         [SetUp]
         public void Setup()
         {
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseSqlServer(connectionString);
-            var options = builder.Options;
-
-            _dbContext = new ApplicationDbContext(options);
-
-            var unitOfWork = new Mock<UnitOfWork>(MockBehavior.Default, _dbContext);
-
-            _unitOfWork = unitOfWork.Object;
             _companiesController = new CompaniesController(_unitOfWork);
         }
         #endregion
@@ -85,7 +64,9 @@ namespace ProductAPICore.Tests
         public void GetById_ExistingIdPassed_ReturnsOkResult()
         {
             //Arrange
-            var id = 1;
+            //Use this ternary operator because the UseInMemoryDatabase doesn't allow reseeding identity column and continue
+            // on the last row value even if we use _dbContext.Database.EnsureDeleted(); in the DatabaseTestBase class
+            var id = (testsCounter > 1) ? 6 : 1;
             // Act
             var okResult = _companiesController.GetCompany(id);
 
@@ -97,7 +78,9 @@ namespace ProductAPICore.Tests
         public void GetById_ExistingIdPassed_ReturnsRightItem()
         {
             //Arrange
-            var id = 1;
+            //Use this ternary operator because the UseInMemoryDatabase doesn't allow reseeding identity column and continue
+            // on the last row value even if we use _dbContext.Database.EnsureDeleted(); in the DatabaseTestBase class
+            var id = (testsCounter > 1) ? 6 : 1;
             var okResult = _companiesController.GetCompany(id) as OkObjectResult;
             var expectedProduct = okResult.Value as GetCompanyViewModel;
 

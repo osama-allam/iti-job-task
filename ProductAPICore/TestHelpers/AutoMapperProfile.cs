@@ -1,12 +1,12 @@
 ﻿using ProductAPICore.API.ViewModels;
 using ProductAPICore.Model.Core.Domains;
 
-namespace ProductAPICore.Tests.TestHelpers
+namespace TestHelpers
 {
     public class AutoMapperProfile : AutoMapper.Profile
     {
 
-        public static void Configure()
+        public static void Initialize()
         {
             AutoMapper.Mapper.Initialize(a =>
             {
@@ -16,6 +16,7 @@ namespace ProductAPICore.Tests.TestHelpers
 
         public AutoMapperProfile()
         {
+
             CreateMap<Product, GetProductViewModel>()
                 .ForMember(dest => dest.CompanyName,
                     opt => opt.MapFrom(src => src.Company.Name))

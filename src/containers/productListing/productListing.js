@@ -6,7 +6,9 @@ import {withRouter} from 'react-router-dom';
 class ProductListing extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      // columns' names, labels, style & layout for Element UI Table  
       columns: [
         {
           label: "Image",
@@ -64,6 +66,7 @@ class ProductListing extends Component {
     }
   }
   
+  // Styling Object to style the element ui table itself
   tableStyle = {
     marginLeft: 'auto',
     fontWeight: 'bold'

@@ -12,13 +12,15 @@ function App() {
   return (
     <>
     <BrowserRouter>
+      {/* NavBar Component */}
       <NavBar/>
+      {/* Routing Pages */}
       <Switch>
-            <Route path="/products/edit/:id" component={Edit}/>
-            <Route path="/products" exact component={Products}/>
-            <Redirect from="/home" to="/"/>
-            <Route path="/" exact component={Home}/>
-            <Route component={NotFound}/>
+        <Route path="/products/edit/:id" component={Edit}/>
+        <Route path="/products" exact component={Products}/>
+        <Redirect from="/home" to="/"/>
+        <Route path="/" exact component={Home}/>
+        <Route component={NotFound}/>
       </Switch>
     </BrowserRouter>
     </>

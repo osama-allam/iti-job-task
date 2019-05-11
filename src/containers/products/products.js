@@ -16,18 +16,18 @@ class Products extends Component {
       loading: true,
       total: 0,
       pageSize: 3,
-      currentPage: 1
+      currentPage: 1,
+      companyName: "All",
+      searchQurey: ""
     }
-    this.pageChanged = this.pageChanged.bind(this);
     this.getProducts = this.getProducts.bind(this);
+    this.pageChanged = this.pageChanged.bind(this);
+    this.filterChanged = this.filterChanged.bind(this);
   }
 
-  getProducts = (currentPage) => {
+  getProducts = (currentPage, companyName, searchQuery) => {
     this.setState({loading: true});
-    CompaniesDB.getAll()
-    .then( res => this.setState({companies: res.data})
-    );
-    ProductsDB.getAll(this.state.pageSize, currentPage)
+    ProductsDB.getAll(this.state.pageSize, currentPage, companyName, searchQuery)
     .then( res => {
       const total = JSON.parse(res.headers["x-pagination"]).totalCount;
       this.setState({
@@ -41,10 +41,20 @@ class Products extends Component {
   componentDidMount()
   {
     this.getProducts(this.state.currentPage);
+    CompaniesDB.getAll()
+    .then( res => this.setState({companies: res.data})
+    );
   }
   pageChanged = (currentPage) => {
     this.setState({currentPage});
-    this.getProducts(currentPage);
+    this.getProducts(currentPage, this.state.companyName, this.state.searchQurey);
+  }
+  filterChanged = (index) => {
+    this.getProducts(1,index, this.state.searchQurey);
+    this.setState({
+      currentPage: 1,
+      companyName: index
+    });
   }
   render() {
     let productsTable = null;
@@ -53,7 +63,7 @@ class Products extends Component {
     <Loading loading={this.state.loading}>
       <Layout.Row gutter="0">
         <Layout.Col span="5">
-          <SideMenu companies={this.state.companies}/>
+          <SideMenu onSelect={this.filterChanged} filter={this.state.companyName} companies={this.state.companies}/>
         </Layout.Col>
         <Layout.Col span="19">
           {productsTable}

@@ -5,10 +5,10 @@ import * as cssClasses from './sideMenu.module.css';
 
 const SideMenu = (props) => {
   let items = null;
-  if(props.companies) items = props.companies.map(c => <Menu.Item key={c.id} index={c.id.toString()}>{c.name}</Menu.Item>);
+  if(props.companies) items = props.companies.map(c => <Menu.Item key={c.id} index={c.name}>{c.name}</Menu.Item>);
   return (
-    <Menu defaultActive="1" className={`${cssClasses.sideMenu} el-menu-vertical-demo`}theme="dark">
-      <Menu.Item index="0">All</Menu.Item>
+    <Menu onSelect={props.onSelect} defaultActive={props.filter} className={`${cssClasses.sideMenu} el-menu-vertical-demo`}theme="dark">
+      <Menu.Item index="All">All</Menu.Item>
       {items}
     </Menu>
   );

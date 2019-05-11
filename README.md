@@ -1,10 +1,10 @@
 # Project Title
 
-React js Template for Desplaying Products
+React js Template for Displaying Products
 
 ## Deployment
 
-Deployed on [HeroKu](https://products-task.herokuapp.com/)
+Deployed on [HeroKu](https://products-task.herokuapp.com/).
 
 ## Authors
 

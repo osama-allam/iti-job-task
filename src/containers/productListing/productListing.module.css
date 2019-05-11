@@ -1,5 +1,6 @@
 .tableImage
 {
-    width: 250px;
-    margin: 0;
+    max-width: 220px;
+    max-height: 180px;
+    margin: 5px;
 }

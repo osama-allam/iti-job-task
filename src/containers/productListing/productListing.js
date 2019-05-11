@@ -11,41 +11,41 @@ class ProductListing extends Component {
         {
           label: "Image",
           prop: "image",
-          width: 250,
+          width: 260,
           align: "center",
           render: function(data){
             return (
             <span>
-              <img src={data.Image} className={cssClasses.tableImage} alt="Product's"/>
+              <img src={data.imageUrl} className={cssClasses.tableImage} alt="Product's"/>
             </span>)
           }
         },
         {
           label: "Name",
           prop: "name",
-          width: 200,
+          width: 210,
           align: "center",
           render: function(data){
-            return (<>{data.Name}</>);
+            return (<>{data.name}</>);
           }
         },
       
         {
           label: "Price",
           prop: "price",
-          width: 200,
+          width: 210,
           align: "center",
           render: function(data){
-            return (<>{data.Price}</>);
+            return (<>{data.price}  L.E.</>);
           }
         },
         {
           label: "Producer",
           prop: "company",
-          width: 200,
+          width: 210,
           align: "center",
           render: function(data){
-            return (<>{data.Company.Name}</>);
+            return (<>{data.companyName}</>);
           }
         },
         {
@@ -55,13 +55,12 @@ class ProductListing extends Component {
           render: (data) => {
             return (
               <span>
-               <Button type="info" size="small" onClick={()=>{this.props.history.push(`products/edit/${data.Id}`)}}>Edit</Button>
+               <Button type="info" size="medium" onClick={()=>{this.props.history.push(`products/edit/${data.id}`)}}>Edit</Button>
               </span>
             )
           }
         }
-      ],
-      data: this.props.products
+      ]
     }
   }
   
@@ -74,7 +73,7 @@ class ProductListing extends Component {
       <Table
         style={this.tableStyle}
         columns={this.state.columns}
-        data={this.state.data}
+        data={this.props.products}
         border={true}
         highlightCurrentRow={true}
       />

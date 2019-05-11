@@ -86,14 +86,13 @@ class Edit extends Component {
   handleSubmit(e) 
   {
     e.preventDefault();
-
+    this.setState({loading: true});
     this.refs.form.validate((valid) => {
       if(valid) 
       {
-        this.setState({loading: true});
         ProductssDB.update(this.state.form.id, this.state.form)
         .then( res => {
-            if(res.status === 204) this.history.push("/products");
+            if(res.status === 204) this.props.history.push("/products");
             else this.setState({loading: false});
           }
         )

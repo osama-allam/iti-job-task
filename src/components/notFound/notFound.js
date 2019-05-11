@@ -1,6 +1,5 @@
 import React from 'react';
 import cssClasses from './notFound.module.css';
-// import logo from '../../logo.svg';
 import {Link} from 'react-router-dom';
 import { Button } from 'element-react/next';
 

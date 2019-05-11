@@ -63,7 +63,7 @@ namespace ProductAPICore.API.Controllers
             catch (Exception e)
             {
 
-                //throw new Exception("Failed to generate pagination link");
+                //throw new ArgumentNullException("Failed to generate pagination link in case of unit test/other");
             }
 
             var products = Mapper.Map<IEnumerable<GetProductViewModel>>(productsFromRepo);
@@ -107,6 +107,7 @@ namespace ProductAPICore.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         //uncomment below line if you want to accept only JSON objects
         //[Consumes("application/json")]

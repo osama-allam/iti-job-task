@@ -38,7 +38,17 @@ namespace ProductAPICore.API.Controllers
         public IActionResult GetProducts(ProductsResourceParameters productsResourceParameters)
         {
             var productsFromRepo = _unitOfWork.Products.GetProductsWithCompany(productsResourceParameters);
-
+            /*
+             * Code between try and catch block helps generating x-pagination header to make pagination easier
+             * and provide it with enough information like below for easier front-end handling
+             
+                x-pagination: {"totalCount":number,
+                                "pageSize":number,
+                                "currentPage":number,
+                                "totalPages":number,
+                                "previousPageLink":"string",
+                                "nextPageLink":"string"} 
+             */
             try
             {
                 //Generate previous and next links

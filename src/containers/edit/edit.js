@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {Form, Button, Input, Select, Layout, Loading} from 'element-react/next';
 import cssClasses from './edit.module.css';
-import * as CompaniesDB from '../../DB/companiesDB'; 
-import * as ProductssDB from '../../DB/productsDB'; 
+import * as CompaniesDB from '../../api/companiesApi'; 
+import * as ProductssDB from '../../api/productsApi'; 
 
 class Edit extends Component {
   constructor(props) {

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ProductListing from '../productListing';
 import SideMenu from '../../components/sideMenu';
 import {Layout, Loading, Pagination} from 'element-react/next';
-import * as ProductsDB from '../../DB/productsDB';
-import * as CompaniesDB from '../../DB/companiesDB';
+import * as ProductsDB from '../../api/productsApi';
+import * as CompaniesDB from '../../api/companiesApi';
 import * as cssClasses from './products.module.css';
 
 class Products extends Component {

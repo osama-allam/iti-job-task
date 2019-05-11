@@ -37,8 +37,6 @@ namespace ProductAPICore.Tests
         [SetUp]
         public void Setup()
         {
-
-
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseSqlServer(connectionString);
             var options = builder.Options;
@@ -53,6 +51,8 @@ namespace ProductAPICore.Tests
         #endregion
 
         #region Unit Tests
+
+        #region Get Action
 
         [Test]
         public void GetProducts_WhenCalled_ReturnsOkResult()
@@ -118,6 +118,10 @@ namespace ProductAPICore.Tests
             Assert.IsInstanceOf<GetProductViewModel>(okResult.Value);
             Assert.AreEqual(expectedProduct.Id, actualProduct.Id);
         }
+        #endregion
+
+        #region Update Action
+
         [Test]
         public void UpdateProduct_ExistingIdPassed_NoProductInBody_ReturnsBadRequestResult()
         {
@@ -164,6 +168,8 @@ namespace ProductAPICore.Tests
             // Assert
             Assert.IsInstanceOf<NoContentResult>(noContentResult);
         }
+        #endregion
+
         #endregion
 
     }

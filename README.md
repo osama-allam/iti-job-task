@@ -95,7 +95,7 @@ A step by step series of examples that tell you how to get a development env run
     Tests -> Windows -> Tests Explorer
     ```
 
-5. From **`Test Explorer`** you can the any of the provided tests
+5. From **`Test Explorer`** you can run any of the provided tests
 
 > ### **_Note: End-to-End Testing_**
 > To isolate unit testing from **SQL Server** database we used [InMemory Provider](https://docs.microsoft.com/en-us/ef/core/providers/in-memory/) to create database in memory to avoid manipulating the actual database  

@@ -83,7 +83,7 @@ A step by step series of examples that tell you how to get a development env run
 
 1. Open the solution in Visual Studio 2017
 
-2. In **_Tests_** solution folder open `ProductAPICore`
+2. In **_Tests_** solution folder open `ProductAPICore.Tests` project
 
 3. You will find two test `classes`
 

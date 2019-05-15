@@ -87,7 +87,7 @@ A step by step series of examples that tell you how to get a development env run
 
 3. You will find two test `classes`
 
-   * `CompaniesControllerTest.cs` and `ProductsController.cs`
+   * `CompaniesControllerTest.cs` and `ProductsControllerTest.cs`
 
 4. To :arrow_forward: run the unit tests open **`Test Explorer`**
 
